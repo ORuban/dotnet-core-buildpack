@@ -42,11 +42,11 @@ echo "Move the app source code into temporary src dir"
 	mv ${BUILD_DIR}/* ${SRC_DIR}
 
     echo "Path: ${PATH}"
-	PATH="${PATH//$BUILD_DIR/$SRC_DIR}"
+	export PATH="${PATH//$BUILD_DIR/$SRC_DIR}"
 	echo "Path: ${PATH}"
 )
 
-SRC_DIR="${BUILD_DIR}"
+# SRC_DIR="${BUILD_DIR}"
 
 echo "Path: ${PATH}"
 which npm
