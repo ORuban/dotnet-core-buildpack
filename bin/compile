@@ -33,22 +33,22 @@ fi
 SRC_DIR=`mktemp -d`
 # Move the app source code into temporary src dir using subshell to not leak shopt
 echo "Move the app source code into temporary src dir"
-(
+
 	which npm
     echo "${SRC_DIR}"
 	echo "${BUILD_DIR}"
 
+(
 	shopt -s dotglob
 	mv ${BUILD_DIR}/* ${SRC_DIR}
-
-    echo "Path: ${PATH}"
-	export PATH="${PATH//$BUILD_DIR/$SRC_DIR}"
-	echo "Path: ${PATH}"
 )
+    
+echo "Path: ${PATH}"
+export PATH="${PATH//$BUILD_DIR/$SRC_DIR}"
+echo "Path: ${PATH}"
 
 # SRC_DIR="${BUILD_DIR}"
 
-echo "Path: ${PATH}"
 which npm
 npm -v
 
