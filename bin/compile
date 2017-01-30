@@ -32,20 +32,13 @@ fi
 
 SRC_DIR=`mktemp -d`
 # Move the app source code into temporary src dir using subshell to not leak shopt
-echo "Move the app source code into temporary src dir"
-
-	which npm
-    echo "${SRC_DIR}"
-	echo "${BUILD_DIR}"
-
+echo "Move the app source code into temporary src dir and update PATH variable"
 (
 	shopt -s dotglob
 	mv ${BUILD_DIR}/* ${SRC_DIR}
 )
-    
 PATH_BACKUP="${PATH}"
 export PATH="${PATH//$BUILD_DIR/$SRC_DIR}"
-echo "Path: ${PATH}"
 
 mkdir -p ${CACHE_DIR}
 
@@ -139,10 +132,6 @@ echo "${PROJECT_NAME:=$PROJECT_DIR_NAME}"
 echo "Restoring the packages"
 dotnet restore ${SRC_DIR}
 
-# configure some npm command during building
-#export PATH="${PROJECT_DIR}/node_modules/.bin:${PATH}"
-#export PATH="${PROJECT_DIR}/node_modules:${PATH}"
-
 echo "Publishing the app"
 
 # Publish to heroku_output
@@ -169,3 +158,5 @@ fi
 
 echo "Restore PATH variable"
 export PATH=PATH_BACKUP
+
+echo "Buildpack compile successed"
