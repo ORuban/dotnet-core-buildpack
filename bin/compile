@@ -43,14 +43,9 @@ echo "Move the app source code into temporary src dir"
 	mv ${BUILD_DIR}/* ${SRC_DIR}
 )
     
-echo "Path: ${PATH}"
+PATH_BACKUP="${PATH}"
 export PATH="${PATH//$BUILD_DIR/$SRC_DIR}"
 echo "Path: ${PATH}"
-
-# SRC_DIR="${BUILD_DIR}"
-
-which npm
-npm -v
 
 mkdir -p ${CACHE_DIR}
 
@@ -145,21 +140,18 @@ echo "Restoring the packages"
 dotnet restore ${SRC_DIR}
 
 # configure some npm command during building
-export PATH="${PROJECT_DIR}/node_modules/.bin:${PATH}"
-export PATH="${PROJECT_DIR}/node_modules:${PATH}"
+#export PATH="${PROJECT_DIR}/node_modules/.bin:${PATH}"
+#export PATH="${PROJECT_DIR}/node_modules:${PATH}"
 
 echo "Publishing the app"
-echo "Path: ${PATH}"
-npm -v
 
 # Publish to heroku_output
 dotnet publish ${PROJECT_JSON_FILE} --output ${BUILD_DIR}/heroku_output --configuration ${CORE_CONFIGURATION}
 
 echo "Publish Successed"
 
-${SRC_DIR}
-
 # Copy node modules if exists
+echo "Copy node modules if exists"
 if [ -e ${SRC_DIR}/node_modules ]; then
     cp -r ${SRC_DIR}/node_modules ./heroku_output
 fi
@@ -174,3 +166,6 @@ else
 web: cd \$HOME/heroku_output && dotnet ./${PROJECT_NAME}.dll --server.urls http://+:\$PORT ${CORE_ENVIRONMENT}
 EOT
 fi
+
+echo "Restore PATH variable"
+export PATH=PATH_BACKUP
