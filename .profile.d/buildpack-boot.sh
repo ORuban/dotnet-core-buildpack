@@ -1,5 +1,4 @@
 export PATH="$PATH:$HOME/dotnet:$HOME/.apt/usr/bin"
-export PATH="$PATH:$HOME/node_modules"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/.apt/usr/lib/x86_64-linux-gnu:$HOME/.apt/usr/lib/i386-linux-gnu:$HOME/.apt/usr/lib"
 export LIBRARY_PATH="$LIBRARY_PATH:$HOME/.apt/usr/lib/x86_64-linux-gnu:$HOME/.apt/usr/lib/i386-linux-gnu:$HOME/.apt/usr/lib"
 export INCLUDE_PATH="$INCLUDE_PATH:$HOME/.apt/usr/include"

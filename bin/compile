@@ -11,6 +11,7 @@ fi
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+
 # This is where the buildpack is stored
 BUILDPACK_DIR=`cd $(dirname $0); cd ..; pwd`
 
@@ -90,8 +91,6 @@ apt_install libunwind8 gettext
 
 mkdir -p ${BUILD_DIR}/dotnet
 
-echo "Path: ${PATH}"
-npm -v
 
 echo "Installing .NET CORE ${CORE_VERSION} from ${CORE_DOWNLOAD_LOCATION}"
 # dotnet-install.sh using `ldconfig` which search pkg in `/lib` or `/usr/lib`. So I change it to binaries.
@@ -108,9 +107,6 @@ dotnet --info
 if [ -n "$PROJECT" ]; then
 	PROJECT_JSON_FILE=${SRC_DIR}/${PROJECT}
 	echo "Project file configured in PROJECT environment variable"
-elif [ -e ${DEPLOYMENT_FILE_LOCATION} ]; then
-	PROJECT_JSON_FILE=${SRC_DIR}/$(awk -F "=" '/project/ {print $2}' ${DEPLOYMENT_FILE_LOCATION} | tr -d ' ')
-	echo "Project file configured in .deployment file"
 else
 	PROJECT_JSON_FILES=$(find ${SRC_DIR}/. -maxdepth 5 -iname "project.json")
 	printf 'Found %s project.json files\n' $(echo "$PROJECT_JSON_FILES" | wc -l | tr -d ' ')
@@ -140,10 +136,10 @@ dotnet publish ${PROJECT_JSON_FILE} --output ${BUILD_DIR}/heroku_output --config
 echo "Publish Successed"
 
 # Copy node modules if exists
-echo "Copy node modules if exists"
-if [ -e ${SRC_DIR}/node_modules ]; then
-    cp -r ${SRC_DIR}/node_modules ./heroku_output
-fi
+#echo "Copy node modules if exists"
+#if [ -e ${SRC_DIR}/node_modules ]; then
+#    cp -r ${SRC_DIR}/node_modules ./heroku_output
+#fi
 
 mkdir -p ${BUILD_DIR}/.profile.d
 cp -n ${BUILDPACK_DIR}/.profile.d/* ${BUILD_DIR}/.profile.d/
