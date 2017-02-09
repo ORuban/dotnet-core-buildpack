@@ -31,15 +31,7 @@ else
 	CORE_ENVIRONMENT=""
 fi
 
-SRC_DIR=`mktemp -d`
-# Move the app source code into temporary src dir using subshell to not leak shopt
-echo "Move the app source code into temporary src dir and update PATH variable"
-(
-	shopt -s dotglob
-	mv ${BUILD_DIR}/* ${SRC_DIR}
-)
-PATH_BACKUP="${PATH}"
-export PATH="${PATH//$BUILD_DIR/$SRC_DIR}"
+SRC_DIR="${BUILD_DIR}"
 
 mkdir -p ${CACHE_DIR}
 
@@ -151,8 +143,5 @@ else
 web: cd \$HOME/heroku_output && dotnet ./${PROJECT_NAME}.dll --server.urls http://+:\$PORT ${CORE_ENVIRONMENT}
 EOT
 fi
-
-echo "Restore PATH variable"
-export PATH=PATH_BACKUP
 
 echo "Buildpack compile successed"
