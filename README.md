@@ -1,5 +1,5 @@
 # dotnet-core-buildpack
-Experimental Heroku Buildpack for .NET Core project
+Experimental Heroku Buildpack for .NET Core project based on project.json
 
 ----
 ## Examples
